@@ -24,6 +24,10 @@ bf_tape = [0]
 # puts
 # puts "File content: ", FILE
 
+# test = $stdin.gets.chomp
+# puts "test: !%s! " % test[-1]
+
+
 puts
 for i in 0..(FILE.size-1) do
     case FILE[i]
@@ -51,10 +55,29 @@ for i in 0..(FILE.size-1) do
         print bf_tape[bf_pointer].chr
         puts FILE[i],'{printing %s }' % bf_tape[bf_pointer].chr
     when ','
-        puts FILE[i],'{handling , }'
+        ch = $stdin.gets.chomp
+        unless ch.length == 0
+            bf_tape[bf_pointer] = ch[-1].ord
+        end
+        puts FILE[i],'{saving user input character %s}' % ch[-1]
     when '['
+        # TODO if *ptr = 0 go to ]
+        if bf_tape[bf_pointer] == 0
+            puts "SKIPPING THE BRACKET"
+            # set pointer to the maching closing bracket
+        else
+            puts "ENTERING THE LOOP"
+            # pass
+
+        end
+
+        # isNested = 0
+        # while test
+            
+        # end
         puts FILE[i],'{handling [ }'
     when ']'
+        i-=3
         puts FILE[i],'{handling ] }'
     else
         print FILE[i]
