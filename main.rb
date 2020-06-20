@@ -37,15 +37,19 @@ for i in 0..(FILE.size-1) do
         bf_pointer-=1
         puts FILE[i],'{decrementing pointer ptr=%d}'% bf_pointer
 
-        #TODO: throw err when ptr <0
+        if bf_pointer < 0 
+            puts "ERROR: Using negative tape pointer."
+            exit 1
+        end
     when '+'
-        bf_tape[bf_pointer]=bf_tape[bf_pointer]+1
-        # puts bf_tape[bf_pointer], bf_tape.size
+        bf_tape[bf_pointer]+=1
         puts FILE[i],'{incrementing contents cont=%d ptr=%d}' % [ bf_tape[bf_pointer], bf_pointer ]
     when '-'
-        puts FILE[i],'{handling - }'
+        bf_tape[bf_pointer]-=1
+        puts FILE[i],'{decrementing contents cont=%d ptr=%d}' % [ bf_tape[bf_pointer], bf_pointer ]
     when '.'
-        puts FILE[i],'{handling . }'
+        print bf_tape[bf_pointer].chr
+        puts FILE[i],'{printing %s }' % bf_tape[bf_pointer].chr
     when ','
         puts FILE[i],'{handling , }'
     when '['
