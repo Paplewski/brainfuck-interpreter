@@ -72,11 +72,26 @@ while i < FILE.size do
 
         nested_cnt=0
         if bf_tape[bf_pointer] == 0
-            while FILE[i] != ']' && nested_cnt==0 do
-                i+=1
-            end
             puts "SKIPPING THE BRACKET"
             # set pointer to the maching closing bracket
+            while true do
+                i+=1
+                if FILE[i] == ']' && nested_cnt == 0
+                    break
+                end
+
+                if FILE[i] == '['
+                    nested_cnt+=1
+                puts "nested_cnt: " + nested_cnt.to_s
+
+                end
+                if nested_cnt >0 && FILE[i] == ']'
+                    nested_cnt-=1
+                puts "nested_cnt: " + nested_cnt.to_s
+
+                end
+            end
+
         else
             puts "ENTERING THE LOOP"
         end
@@ -85,8 +100,20 @@ while i < FILE.size do
         puts FILE[i],'{handling ] }'
         
         nested_cnt=0
-        while FILE[i] != '[' && nested_cnt==0 do
+        while true do
             i-=1
+            
+            if FILE[i] == '[' && nested_cnt==0
+                break
+            end
+
+            if FILE[i] == ']'
+                nested_cnt+=1
+            end
+            if nested_cnt >0 && FILE[i] == '['
+                nested_cnt-=1
+            end
+            puts "nested_cnt: " + nested_cnt.to_s
         end
         
     else
