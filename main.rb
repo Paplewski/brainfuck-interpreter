@@ -29,7 +29,8 @@ bf_tape = [0]
 
 
 puts
-for i in 0..(FILE.size-1) do
+i = 0
+while i < FILE.size do
     case FILE[i]
     when '>'
         bf_pointer+=1
@@ -37,6 +38,7 @@ for i in 0..(FILE.size-1) do
             bf_tape << 0
         end
         puts FILE[i],'{incrementing pointer ptr=%d}'% bf_pointer
+    i+=1
     when '<'
         bf_pointer-=1
         puts FILE[i],'{decrementing pointer ptr=%d}'% bf_pointer
@@ -45,49 +47,64 @@ for i in 0..(FILE.size-1) do
             puts "ERROR: Using negative tape pointer."
             exit 1
         end
+    i+=1
     when '+'
         bf_tape[bf_pointer]+=1
         puts FILE[i],'{incrementing contents cont=%d ptr=%d}' % [ bf_tape[bf_pointer], bf_pointer ]
+    i+=1
     when '-'
         bf_tape[bf_pointer]-=1
         puts FILE[i],'{decrementing contents cont=%d ptr=%d}' % [ bf_tape[bf_pointer], bf_pointer ]
+    i+=1
     when '.'
         print bf_tape[bf_pointer].chr
         puts FILE[i],'{printing %s }' % bf_tape[bf_pointer].chr
+    i+=1
     when ','
         ch = $stdin.gets.chomp
         unless ch.length == 0
             bf_tape[bf_pointer] = ch[-1].ord
         end
         puts FILE[i],'{saving user input character %s}' % ch[-1]
+    i+=1
     when '['
-        # TODO if *ptr = 0 go to ]
+        puts FILE[i],'{handling [ }'
+
+        nested_cnt=0
         if bf_tape[bf_pointer] == 0
+            while FILE[i] != ']' && nested_cnt==0 do
+                i+=1
+            end
             puts "SKIPPING THE BRACKET"
             # set pointer to the maching closing bracket
         else
             puts "ENTERING THE LOOP"
-            # pass
-
         end
-
-        # isNested = 0
-        # while test
-            
-        # end
-        puts FILE[i],'{handling [ }'
+    i+=1
     when ']'
-        i-=3
         puts FILE[i],'{handling ] }'
+        
+        nested_cnt=0
+        while FILE[i] != '[' && nested_cnt==0 do
+            i-=1
+        end
+        
     else
         print FILE[i]
+    i+=1
     end
-end
 
-puts
-puts "DEBUG INFO:"
+
+puts "index: "+i.to_s
 puts "pointer: "+bf_pointer.to_s
 print "tape: ", bf_tape, "\ntape size: ", bf_tape.size
+puts
+puts
+
+sleep 1
+end
+
+
 
 
 # def FILE.remove_nonbf_chars
@@ -97,5 +114,3 @@ print "tape: ", bf_tape, "\ntape size: ", bf_tape.size
 
 # FILE.remove_nonbf_chars
 # puts "File content: ", FILE.remove_nonbf_chars
-
-
